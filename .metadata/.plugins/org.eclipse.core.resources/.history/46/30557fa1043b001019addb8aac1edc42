@@ -1,0 +1,44 @@
+package com.fullStackHexagonal.fullstackHexagonal.Application;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.fullStackHexagonal.fullstackHexagonal.Application.Ports.BookInputPort;
+import com.fullStackHexagonal.fullstackHexagonal.Application.Ports.BookOutputPort;
+import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
+
+@Service
+public class BookService implements BookInputPort  {
+
+	@Autowired
+	private BookOutputPort bookOutputPort;
+	
+	@Override
+	public List<Book> listar() {
+		return bookOutputPort.findAll();
+	}
+
+	@Override
+	public Book encuentraById(int id) {
+	    return (Book) bookOutputPort.findById(id)
+	    		.orElseThrow(() -> new RuntimeException("No se ha encontrado el libro con ID" + id));
+	}
+
+	@Override
+	public Book add(Book book) {
+		return bookOutputPort.save(book);
+	}
+
+	@Override
+	public void borrar(int id) {
+		if (bookOutputPort.findById(id).isPresent()) {
+	        bookOutputPort.deleteById(id);
+	    } else {
+	        throw new RuntimeException("No se puede borrar: no existe el libro con ID: " + id);
+	    }
+	}
+	
+
+}

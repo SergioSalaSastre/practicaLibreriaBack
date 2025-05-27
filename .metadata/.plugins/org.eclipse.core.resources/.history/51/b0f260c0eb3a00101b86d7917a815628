@@ -1,0 +1,16 @@
+package com.fullStackHexagonal.fullstackHexagonal.Application.Ports;
+
+import java.util.List;
+
+import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
+
+public interface bookInputPort {
+	//lo primero es el formato que me va a devolver
+	
+	List <Book> listar();
+	Book encuentraById(int id);
+	Book add(Book book);
+	Book edit(Book book);
+	void borrar(int id);
+
+}

@@ -1,0 +1,5 @@
+package com.fullStackHexagonal.fullstackHexagonal.infraestructure.ApiRest;
+
+public class BookController {
+
+}

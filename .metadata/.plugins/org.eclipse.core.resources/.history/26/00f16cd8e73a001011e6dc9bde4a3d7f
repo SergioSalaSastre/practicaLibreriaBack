@@ -1,0 +1,5 @@
+package com.fullStackHexagonal.fullstackHexagonal.Application.Ports;
+
+public interface bookOutputPort {
+
+}

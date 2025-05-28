@@ -19,8 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.fullStackHexagonal.fullstackHexagonal.Application.Mappers.BookRequestMapper;
+import com.fullStackHexagonal.fullstackHexagonal.Application.Mappers.BookResponseMapper;
 import com.fullStackHexagonal.fullstackHexagonal.Application.Ports.BookInputPort;
 import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
+import com.fullStackHexagonal.fullstackHexagonal.infraestructure.DTO.BookRequest;
+import com.fullStackHexagonal.fullstackHexagonal.infraestructure.DTO.BookResponse;
+
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200",maxAge=3600)
@@ -30,6 +35,14 @@ public class BookController {
 	
 	@Autowired
 	BookInputPort bookInputPort;
+	
+	// He eliminado estas dos líneas porque no necesito inyectar los mappers,
+	// ya que los métodos son estáticos y se usan directamente con la clase.
+	// @Autowired
+	// private BookRequestMapper bookRequestMapper;
+	
+	// @Autowired
+	// private BookResponseMapper bookResponseMapper;
 	
 	
 	@Operation(
@@ -50,8 +63,13 @@ public class BookController {
 	    )
 	
 	@GetMapping
-	public List<Book> listar() {
-		return bookInputPort.listar();
+	public ResponseEntity<List<BookResponse>> listar() {
+	    List<BookResponse> books = bookInputPort.listar()
+	        .stream()
+	        .map(BookResponseMapper::toDto) // Uso directo del método estático (sin instancia)
+	        .toList();
+
+	    return ResponseEntity.ok(books);
 	}
 	
 	
@@ -64,13 +82,15 @@ public class BookController {
 		        @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
 		    }
 		)
-		@GetMapping("/{id}")
-		public Book getById(
-		    @Parameter(description = "ID del libro a buscar", example = "1")
-		    @PathVariable int id
-		) {
-		    return bookInputPort.encuentraById(id); 
-		}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<BookResponse> getById(
+	    @Parameter(description = "ID del libro a buscar", example = "1")
+	    @PathVariable int id
+	) {
+	    Book book = bookInputPort.encuentraById(id);
+	    return ResponseEntity.ok(BookResponseMapper.toDto(book)); // Método estático usado directamente
+	}
 	
 	@Operation(
 		    summary = "Crear un nuevo libro",
@@ -87,9 +107,10 @@ public class BookController {
 		    }
 		)
 	@PostMapping
-	public ResponseEntity<Book> createBook(@RequestBody Book book) {
-	    Book nuevoLibro = bookInputPort.add(book);
-	    return ResponseEntity.status(201).body(nuevoLibro);
+	public ResponseEntity<BookResponse> createBook(@RequestBody BookRequest bookRequest) {
+	    Book nuevoLibro = BookRequestMapper.toEntity(bookRequest); // Uso método estático
+	    Book created = bookInputPort.add(nuevoLibro);
+	    return ResponseEntity.status(201).body(BookResponseMapper.toDto(created)); // Uso método estático
 	}
 	
 	@Operation(
@@ -123,11 +144,15 @@ public class BookController {
 		        @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
 		    }
 		)
-		@PutMapping
-		public ResponseEntity<Book> updateBook(@RequestBody Book book) {
-		    Book actualizado = bookInputPort.actualizar(book);
-		    return ResponseEntity.ok(actualizado);
-		}
-	
+	@PutMapping("/{id}")  // ====== CAMBIO 2 ======= Agregado {id} en la ruta para que coincida con el parámetro PathVariable
+	public ResponseEntity<BookResponse> updateBook(
+	        @PathVariable int id, // ====== CAMBIO 3 ======= Se añadió @PathVariable para que Spring lo vincule a la ruta
+	        @RequestBody BookRequest bookRequest) {
+	    
+	    Book bookActualizado = BookRequestMapper.toEntity(bookRequest);
+	    bookActualizado.setId(id); // Seteamos el id que viene por path
+	    Book actualizado = bookInputPort.actualizar(bookActualizado);
+	    return ResponseEntity.ok(BookResponseMapper.toDto(actualizado));
+	}
 	
 }

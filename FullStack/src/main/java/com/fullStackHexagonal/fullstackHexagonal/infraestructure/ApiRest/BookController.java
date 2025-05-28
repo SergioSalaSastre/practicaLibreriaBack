@@ -27,7 +27,7 @@ import com.fullStackHexagonal.fullstackHexagonal.infraestructure.DTO.BookRespons
 
 
 @RestController
-@CrossOrigin(origins="http://localhost:4200",maxAge=3600)
+@CrossOrigin(origins="http://localhost:4200",maxAge=3600) //puerto del front, tiempo máximo de espera en segundos
 @RequestMapping("/book")     //http://localhost:8080/book
 @Tag(name = "Libros", description = "Operaciones para la gestión de la biblioteca digital")
 public class BookController {

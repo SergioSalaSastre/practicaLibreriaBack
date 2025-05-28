@@ -1,20 +1,7 @@
 package com.fullStackHexagonal.fullstackHexagonal.Application.Ports;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
 
 
-public interface BookOutputPort extends JpaRepository<Book, Integer> {
-	//dialoga con el motor de datos de mySql
-	/*Doy más info a la interfaz diciendo con qué voy a entrar, por una parte con el objeto libro cuya clave primaria es book*/
-	
-	/*
-	List<Book> findAll();
-	Book findById(int id);
-	Book save(Book book);
-	void deleteById(int id);
-	*/
-}
+public interface BookOutputPort extends JpaRepository<Book, Integer> {}

@@ -10,9 +10,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,4 +91,43 @@ public class BookController {
 	    Book nuevoLibro = bookInputPort.add(book);
 	    return ResponseEntity.status(201).body(nuevoLibro);
 	}
+	
+	@Operation(
+			summary = "Borrar un libro por ID",
+			description = "Busca un libro por ID y en caso de encontrarlo, lo borra",
+			responses = {
+					 @ApiResponse(responseCode = "204", description = "Libro eliminado correctamente"),
+				     @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
+			}
+		)
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteById(
+	    @Parameter(description = "ID del libro a eliminar", example = "1")
+	    @PathVariable int id
+	) {
+	    bookInputPort.borrar(id); 
+	    return ResponseEntity.noContent().build(); // 204 No Content
+	}
+	
+	@Operation(
+		    summary = "Actualizar un libro existente",
+		    description = "Actualiza los datos de un libro registrado.",
+		    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+		        description = "Libro con los nuevos datos (debe incluir un ID existente)",
+		        required = true,
+		        content = @Content(schema = @Schema(implementation = Book.class))
+		    ),
+		    responses = {
+		        @ApiResponse(responseCode = "200", description = "Libro actualizado correctamente",
+		                     content = @Content(schema = @Schema(implementation = Book.class))),
+		        @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content)
+		    }
+		)
+		@PutMapping
+		public ResponseEntity<Book> updateBook(@RequestBody Book book) {
+		    Book actualizado = bookInputPort.actualizar(book);
+		    return ResponseEntity.ok(actualizado);
+		}
+	
+	
 }

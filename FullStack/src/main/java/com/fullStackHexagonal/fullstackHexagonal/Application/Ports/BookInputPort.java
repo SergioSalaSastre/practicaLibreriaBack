@@ -12,5 +12,6 @@ public interface BookInputPort {
 	Book encuentraById(int id);
 	Book add(Book book);
 	void borrar(int id);
+	Book actualizar(Book book);
 
 }

@@ -39,5 +39,15 @@ public class BookService implements BookInputPort  {
 	    }
 	}
 	
+	@Override
+	public Book actualizar(Book book) {
+	    // Verifico que existe
+	    Book existente = bookOutputPort.findById(book.getId())
+	        .orElseThrow(() -> new RuntimeException("No existe el libro con ID: " + book.getId()));
+	    
+	    // Actualizo todo el objeto para simplificar
+	    return bookOutputPort.save(book);
+	}
+	
 
 }

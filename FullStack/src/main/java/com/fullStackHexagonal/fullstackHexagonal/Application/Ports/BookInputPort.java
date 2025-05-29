@@ -6,12 +6,10 @@ import java.util.List;
 import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
 
 public interface BookInputPort {
-	//lo primero es el formato que me va a devolver
 	
-	List <Book> listar();
+	List <Book> buscar(String title, String author, Integer publicationYear, String literaryGenre);
 	Book encuentraById(int id);
 	Book add(Book book);
 	void borrar(int id);
 	Book actualizar(Book book);
-
 }

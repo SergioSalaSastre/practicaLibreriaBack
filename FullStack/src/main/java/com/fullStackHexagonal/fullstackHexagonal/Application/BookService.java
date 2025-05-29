@@ -1,6 +1,7 @@
 package com.fullStackHexagonal.fullstackHexagonal.Application;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,15 @@ public class BookService implements BookInputPort  {
 	private BookOutputPort bookOutputPort;
 	
 	@Override
-	public List<Book> listar() {
-		return bookOutputPort.findAll();
+	public List<Book> buscar(String title, String author, Integer publicationYear, String literaryGenre) {
+	    return bookOutputPort.findAll().stream()
+	        .filter(book -> title == null || book.getTitle().toLowerCase().contains(title.toLowerCase()))
+	        .filter(book -> author == null || book.getAuthor().toLowerCase().contains(author.toLowerCase()))
+	        .filter(book -> publicationYear == null || book.getPublicationYear().equals(publicationYear))
+	        .filter(book -> literaryGenre == null || book.getLiteraryGenre().toLowerCase().contains(literaryGenre.toLowerCase()))
+	        .collect(Collectors.toList());
 	}
+
 
 	@Override
 	public Book encuentraById(int id) {

@@ -1,15 +1,20 @@
 package com.fullStackHexagonal.fullstackHexagonal.Application.Ports;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
 
+public interface BookOutputPort {
 
-public interface BookOutputPort extends JpaRepository<Book, Integer> {
-		
-	List<Book> findByTitleContainingIgnoreCaseAndAuthorContainingIgnoreCaseAndPublicationYearAndLiteraryGenreContainingIgnoreCase(
-		    String title, String author, Integer publicationYear, String literaryGenre);
-	
+    List<Book> findAll();
+
+    Optional<Book> findById(int id);
+
+    Book save(Book book);
+
+    void deleteById(int id);
+
+    List<Book> findByFilters(String title, String author, Integer publicationYear, String literaryGenre);
 }
 	

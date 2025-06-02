@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
 
 @Repository
-public interface BookJpaRepository extends JpaRepository<Book, Integer> {
-    List<Book> findByTitleContainingIgnoreCaseAndAuthorContainingIgnoreCaseAndPublicationYearAndLiteraryGenreContainingIgnoreCase(
+public interface BookJpaRepository extends JpaRepository<BookEntity, Integer> {
+    List<BookEntity> findByTitleContainingIgnoreCaseAndAuthorContainingIgnoreCaseAndPublicationYearAndLiteraryGenreContainingIgnoreCase(
         String title, String author, Integer publicationYear, String literaryGenre);
 }

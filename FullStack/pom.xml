@@ -60,6 +60,11 @@
     		<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
     		<version>2.5.0</version> <!-- Asegúrate de tener una versión reciente -->
 		</dependency>
+		<dependency>
+    		<groupId>org.mindrot</groupId>
+    		<artifactId>jbcrypt</artifactId>
+    		<version>0.4</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,4 +1,4 @@
-package com.fullStackHexagonal.fullstackHexagonal.Application.Mappers;
+package com.fullStackHexagonal.fullstackHexagonal.infraestructure.Mappers;
 
 import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
 import com.fullStackHexagonal.fullstackHexagonal.infraestructure.Repository.BookEntity;

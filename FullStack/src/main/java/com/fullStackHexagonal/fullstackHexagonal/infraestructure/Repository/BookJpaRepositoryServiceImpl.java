@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import com.fullStackHexagonal.fullstackHexagonal.Application.Ports.BookOutputPort;
 import com.fullStackHexagonal.fullstackHexagonal.Domain.Book;
-import com.fullStackHexagonal.fullstackHexagonal.Application.Mappers.BookEntityMapper;
+import com.fullStackHexagonal.fullstackHexagonal.infraestructure.Mappers.BookEntityMapper;
 
 public class BookJpaRepositoryServiceImpl implements BookOutputPort {
 

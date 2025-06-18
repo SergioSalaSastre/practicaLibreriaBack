@@ -1,5 +1,6 @@
 package com.fullStackHexagonal.fullstackHexagonal.Application;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -59,5 +60,9 @@ public class UserService implements UserInputPort {
 
 	     return Optional.empty();
 	 }
+	@Override
+	public List<User> getAll() {
+		return userOutputPort.findAll();  // Recuperar todos los usuarios desde el repositorio
+	}
 
 }

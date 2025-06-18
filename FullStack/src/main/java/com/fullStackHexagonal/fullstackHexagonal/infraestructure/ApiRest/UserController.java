@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.fullStackHexagonal.fullstackHexagonal.Application.Mappers.UserRequestMapper;
-import com.fullStackHexagonal.fullstackHexagonal.Application.Mappers.UserResponseMapper;
+import com.fullStackHexagonal.fullstackHexagonal.infraestructure.Mappers.UserRequestMapper;
+import com.fullStackHexagonal.fullstackHexagonal.infraestructure.Mappers.UserResponseMapper;
 import com.fullStackHexagonal.fullstackHexagonal.Application.Ports.UserInputPort;
 import com.fullStackHexagonal.fullstackHexagonal.Domain.User;
 import com.fullStackHexagonal.fullstackHexagonal.infraestructure.DTO.LoginRequest;
@@ -25,6 +25,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @CrossOrigin(origins ="http://localhost:4200", maxAge=3600)
 @RequestMapping("/user")
@@ -34,7 +37,24 @@ public class UserController {
 
 	@Autowired
 	private UserInputPort userInputPort;
-	
+
+	@Operation(
+			summary = "Obtener todos los usuarios",
+			description = "Devuelve la lista de todos los usuarios",
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Usuarios encontrados",
+							content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+					@ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content)
+			}
+	)
+	@GetMapping("/")
+	public ResponseEntity<List<UserResponse>> getAll() {
+		List<User> users = userInputPort.getAll();  // Llamamos al servicio para obtener todos los usuarios
+		List<UserResponse> userResponses = users.stream()
+				.map(UserResponseMapper::toDto)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(userResponses);  // Devolvemos la lista de usuarios
+	}
 	@Operation(
 		    summary = "Obtener usuario por ID",
 		    description = "Busca y devuelve un usuario por su identificador único",

@@ -1,4 +1,4 @@
-package com.fullStackHexagonal.fullstackHexagonal.Application.Mappers;
+package com.fullStackHexagonal.fullstackHexagonal.infraestructure.Mappers;
 import com.fullStackHexagonal.fullstackHexagonal.Domain.User;
 import com.fullStackHexagonal.fullstackHexagonal.infraestructure.Repository.UserEntity;
 
